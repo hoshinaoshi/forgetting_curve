@@ -2,11 +2,24 @@ import * as React from 'react';
 import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
+import * as SQLite from "expo-sqlite";
 
 import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
-  componentWillMount() {
+  componentDidMount() {
+    const db = SQLite.openDatabase("aaaaaaaaaaaaa")
+    db.transaction(tx => {
+      tx.executeSql(
+        'create table if not exists players (id integer primary key not null, name text);', // 実行したいSQL文
+        null, // SQL文の引数
+        () => {console.log('success')}, // 成功時のコールバック関数
+        () => {console.log('fail')} // 失敗時のコールバック関数
+      );
+    },
+      () => {console.log('fail')}, // 失敗時のコールバック関数
+      () => {console.log('success')} // 成功時のコールバック関数
+    )
   }
   render(){
     return (
