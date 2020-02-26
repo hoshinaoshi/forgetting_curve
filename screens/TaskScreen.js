@@ -1,13 +1,14 @@
 import * as React from 'react';
-import { Button, Picker, TextInput, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, Button, Picker, TextInput, Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import * as SQLite from "expo-sqlite";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import RNPickerSelect from 'react-native-picker-select';
 import RNDatePicker from 'react-native-datepicker';
-
 import { MonoText } from '../components/StyledText';
+
+const DB = SQLite.openDatabase("aaaaaaaaaaaaaaaaa")
 
 export default class TaskScreen extends React.Component {
   constructor(props) {
@@ -21,14 +22,16 @@ export default class TaskScreen extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const db = SQLite.openDatabase("aaaaaaaaaaaaaaaaa")
-    db.transaction(tx => {
-      tx.executeSql(
-        'select * from titles',
-        null,
-        (_, { rows: { array } }) => {this.setState({ttitles: array})} // 第2パラメータに格納されているクエリの結果から取得した配列(_array)を、stateに格納する
-      )
+  async componentDidMount() {
+    const outerThis = this
+    DB.transaction(tx => {
+      tx.executeSql("select * from titles",[], function(tx, res) {
+        let array = []
+        res.rows._array.forEach(r => {
+          array.push({key: array.length, value: r.id, label: r.name})
+        });
+        outerThis.setState({titles: array})
+      })
     },
       () => {console.log('fail')},
       () => {console.log('success')}
@@ -45,6 +48,20 @@ export default class TaskScreen extends React.Component {
   }
   _onChangeContentName(content_name){
     this.setState({content_name: content_name})
+  }
+  async _register(){
+    let title_id = this.state.title_id
+    if(title_id == null){
+      if(this.state.title){
+        const outerThis = this
+        DB.transaction(function(txn) {
+          txn.executeSql("insert into titles (name, status) values (?, 0);", [outerThis.state.title], function(tx, res) {
+          });
+        });
+      } else {
+        Alert.alert("タイトルを入力してください")
+      }
+    }
   }
   render(){
     return (
@@ -96,7 +113,7 @@ export default class TaskScreen extends React.Component {
         />
         <Button
           title="Press me"
-          onPress={() => console.log("登録")}
+          onPress={() => this._register()}
         />
       </View>
     );

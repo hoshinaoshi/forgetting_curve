@@ -4,13 +4,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import * as WebBrowser from 'expo-web-browser';
 import * as SQLite from "expo-sqlite";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
-
 import { MonoText } from '../components/StyledText';
+
+const DB = SQLite.openDatabase("aaaaaaaaaaaaaaaaa")
 
 export default class HomeScreen extends React.Component {
   componentDidMount() {
-    const db = SQLite.openDatabase("aaaaaaaaaaaaaaaaa")
-    db.transaction(tx => {
+    DB.transaction(tx => {
       tx.executeSql(
         "create table if not exists titles (id integer primary key not null, name text not null, status integer not null);", // 実行したいSQL文
         null, // SQL文の引数
@@ -22,7 +22,7 @@ export default class HomeScreen extends React.Component {
       () => {console.log('success2')} // 成功時のコールバック関数
     )
     
-    db.transaction(tx => {
+    DB.transaction(tx => {
       tx.executeSql(
         "create table if not exists tasks (id integer primary key not null, title_id integer not null, memorization_date text not null, content_name text not null, status integer not null);", // 実行したいSQL文
         null, // SQL文の引数
