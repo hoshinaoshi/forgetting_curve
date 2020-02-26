@@ -12,20 +12,34 @@ export default class HomeScreen extends React.Component {
     const db = SQLite.openDatabase("aaaaaaaaaaaaa")
     db.transaction(tx => {
       tx.executeSql(
-        'create table if not exists players (id integer primary key not null, name text);', // 実行したいSQL文
+        "create table if not exists tables (id integer primary key not null, name text not null, status integer not null);", // 実行したいSQL文
         null, // SQL文の引数
-        () => {console.log('success')}, // 成功時のコールバック関数
-        () => {console.log('fail')} // 失敗時のコールバック関数
+        () => {console.log('success1')}, // 成功時のコールバック関数
+        () => {console.log('fail1')} // 失敗時のコールバック関数
       );
     },
-      () => {console.log('fail')}, // 失敗時のコールバック関数
-      () => {console.log('success')} // 成功時のコールバック関数
+      () => {console.log('fail2')}, // 失敗時のコールバック関数
+      () => {console.log('success2')} // 成功時のコールバック関数
+    )
+    
+    db.transaction(tx => {
+      tx.executeSql(
+        "create table if not exists tasks (id integer primary key not null, title_id integer not null, year integer not  null, month integer not  null, day integer not null, content_name text not null, status integer not null);", // 実行したいSQL文
+        null, // SQL文の引数
+        () => {console.log('success3')}, // 成功時のコールバック関数
+        () => {console.log('fail3')} // 失敗時のコールバック関数
+      );
+    },
+      () => {console.log('fail4')}, // 失敗時のコールバック関数
+      () => {console.log('success4')} // 成功時のコールバック関数
     )
   }
   render(){
     return (
       <View style={styles.container}>
-        <Calendar
+        <CalendarList
+          horizontal={true}
+          pagingEnabled={true}
           // Initially visible month. Default = Date()
           //current={'2012-03-01'}
           // Minimum date that can be selected, dates before minDate will be grayed out. Default = undefined
@@ -64,13 +78,6 @@ export default class HomeScreen extends React.Component {
           // Disable right arrow. Default = false
           disableArrowRight={false}
         />
-        <View style={styles.tabBarInfoContainer}>
-          <Text style={styles.tabBarInfoText}>This is a tab bar. You can edit it in:</Text>
-
-          <View style={[styles.codeHighlightContainer, styles.navigationFilename]}>
-            <MonoText style={styles.codeHighlightText}>navigation/BottomTabNavigator.js</MonoText>
-          </View>
-        </View>
       </View>
     );
   }
