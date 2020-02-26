@@ -50,17 +50,23 @@ export default class TaskScreen extends React.Component {
     this.setState({content_name: content_name})
   }
   async _register(){
-    let title_id = this.state.title_id
-    if(title_id == null){
+    const outerThis = this
+    if(this.state.title_id == null){
       if(this.state.title){
-        const outerThis = this
         DB.transaction(function(txn) {
           txn.executeSql("insert into titles (name, status) values (?, 0);", [outerThis.state.title], function(tx, res) {
+            txn.executeSql("insert into tasks (title_id, memorization_date, content_name,  status) values (?, ?, ?, 0);", [res.insertId, outerThis.state.memorization_date, outerThis.state.content_name], function(tx, res) {
+            });
           });
         });
       } else {
         Alert.alert("タイトルを入力してください")
       }
+    } else {
+      DB.transaction(function(txn) {
+        txn.executeSql("insert into tasks (title_id, memorization_date, content_name,  status) values (?, ?, ?, 0);", [outerThis.state.title_id, outerThis.state.memorization_date, outerThis.state.content_name], function(tx, res) {
+        });
+      });
     }
   }
   render(){
