@@ -9,10 +9,10 @@ import { MonoText } from '../components/StyledText';
 
 export default class HomeScreen extends React.Component {
   componentDidMount() {
-    const db = SQLite.openDatabase("aaaaaaaaaaaaa")
+    const db = SQLite.openDatabase("aaaaaaaaaaaaaaaaa")
     db.transaction(tx => {
       tx.executeSql(
-        "create table if not exists tables (id integer primary key not null, name text not null, status integer not null);", // 実行したいSQL文
+        "create table if not exists titles (id integer primary key not null, name text not null, status integer not null);", // 実行したいSQL文
         null, // SQL文の引数
         () => {console.log('success1')}, // 成功時のコールバック関数
         () => {console.log('fail1')} // 失敗時のコールバック関数
@@ -24,7 +24,7 @@ export default class HomeScreen extends React.Component {
     
     db.transaction(tx => {
       tx.executeSql(
-        "create table if not exists tasks (id integer primary key not null, title_id integer not null, year integer not  null, month integer not  null, day integer not null, content_name text not null, status integer not null);", // 実行したいSQL文
+        "create table if not exists tasks (id integer primary key not null, title_id integer not null, memorization_date text not null, content_name text not null, status integer not null);", // 実行したいSQL文
         null, // SQL文の引数
         () => {console.log('success3')}, // 成功時のコールバック関数
         () => {console.log('fail3')} // 失敗時のコールバック関数
