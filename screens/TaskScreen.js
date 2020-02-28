@@ -118,7 +118,7 @@ export default class TaskScreen extends React.Component {
           value={this.state.content_name}
         />
         <Button
-          title="Press me"
+          title="登録"
           onPress={() => this._register()}
         />
       </View>
