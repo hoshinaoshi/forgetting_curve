@@ -7,6 +7,7 @@ import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import RNPickerSelect from 'react-native-picker-select';
 import RNDatePicker from 'react-native-datepicker';
 import { MonoText } from '../components/StyledText';
+import moment from "moment";
 
 const DB = SQLite.openDatabase("aaaaaaaaaaaaaaaaa")
 
@@ -17,7 +18,7 @@ export default class TaskScreen extends React.Component {
       titles: [],
       title_id: null,
       title: "",
-      memorization_date: "",
+      memorization_date: moment().format("YYYY-MM-DD"),
       content_name: "",
     };
   }
@@ -72,30 +73,30 @@ export default class TaskScreen extends React.Component {
   render(){
     return (
       <View style={styles.container}>
-        <Text>タイトル</Text>
-        <Text>タイトルを新規作成</Text>
+        <Text style={styles.titleText}>タイトル</Text>
+        <Text style={styles.text}>タイトルを新規作成</Text>
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+          style={styles.textInput}
+          placeholder="学習対象のタイトルを入力"
           onChangeText={text => this._onChangeTitle(text)}
           value={this.state.title}
         />
-        <Text>既存タイトルから設定</Text>
+        <Text style={styles.text}>既存タイトルから設定</Text>
         <RNPickerSelect
-          useNativeAndroidPickerStyle={false}
-          style={{flex: 1, width: undefined, height: 32}}
+          style={{ inputIOS: styles.picker, inputAndroid: styles.picker}}
           value={this.state.title_id}
           placeholder={{value: null, label: "タイトルの選択", color: "black"}}
           onValueChange={(itemValue) => this._onChangeTitleList(itemValue)}
           items={this.state.titles}
         />
-        <Text>記憶を開始した日付</Text>
+        <Text style={styles.titleText}>記憶を開始した日付</Text>
         <RNDatePicker
           customStyles={{
             dateInput: {
               flex: 1,
               borderWidth: 0,
               borderColor: 'white',
-              alignItems: 'flex-end',
+              alignItems: 'flex-start',
               justifyContent: 'center'
             },
           }}
@@ -111,9 +112,11 @@ export default class TaskScreen extends React.Component {
           onDateChange={(memorization_date) => this._onDateChange(memorization_date)}
           placeholder={"2020-01-01"}
         />
-        <Text>内容</Text>
+        <Text style={styles.titleText}>内容</Text>
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+          style={{...styles.textInput, height: 200, borderWidth: 1, borderColor: "lightgray"}}
+          multiLine={true}
+          placeholder="学習内容のメモを入力"
           onChangeText={text => this._onChangeContentName(text)}
           value={this.state.content_name}
         />
@@ -134,87 +137,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    paddingHorizontal: 16,
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center',
+  titleText: {
+    fontSize: 20,
+    fontWeight: "bold",
+    paddingVertical: 8,
   },
-  contentContainer: {
-    paddingTop: 30,
+  text:{
+    marginVertical: 4,
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    marginBottom: 20,
+  textInput: {
+    height: 40,
+    borderColor: "gray",
   },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10,
-  },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50,
-  },
-  homeScreenFilename: {
-    marginVertical: 7,
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)',
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4,
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center',
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3,
-      },
-      android: {
-        elevation: 20,
-      },
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20,
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center',
-  },
-  navigationFilename: {
-    marginTop: 5,
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center',
-  },
-  helpLink: {
-    paddingVertical: 15,
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7',
+  picker: {
+    paddingVertical: 8,
   },
 });
