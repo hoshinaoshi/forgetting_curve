@@ -8,6 +8,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import RNDatePicker from 'react-native-datepicker';
 import { MonoText } from '../components/StyledText';
 import moment from "moment";
+import { CommonActions } from '@react-navigation/native';
 
 const DB = SQLite.openDatabase("aaaaaaaaaaaaaaaaa")
 
@@ -69,6 +70,12 @@ export default class TaskScreen extends React.Component {
         });
       });
     }
+    this.props.navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: "Home" }],
+      })
+    );
   }
   render(){
     return (
