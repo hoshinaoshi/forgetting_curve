@@ -57,16 +57,30 @@ export default class TaskScreen extends React.Component {
       if(this.state.title){
         DB.transaction(function(txn) {
           txn.executeSql("insert into titles (name, status) values (?, 0);", [outerThis.state.title], function(tx, res) {
-            txn.executeSql("insert into tasks (title_id, memorization_date, content_name,  status) values (?, ?, ?, 0);", [res.insertId, outerThis.state.memorization_date, outerThis.state.content_name], function(tx, res) {
+            txn.executeSql("insert into tasks (title_id, memorization_date, content_name,  status) values (?, ?, ?, 0);", [res.insertId, outerThis.state.memorization_date, outerThis.state.content_name], function(tx, res) {});
+            [1, 3, 7, 14].forEach(function(elapsedDay) {
+              const duration = moment.duration(elapsedDay, "days")
+              txn.executeSql(
+                "insert into tasks (title_id, memorization_date, content_name,  status) values (?, ?, ?, 0);",
+                [res.insertId, moment(outerThis.state.memorization_date).add(duration).format("YYYY-MM-DD"), outerThis.state.content_name],
+                function(tx, res) {}
+              );
             });
           });
         });
       } else {
-        Alert.alert("タイトルを入力してください")
+        return Alert.alert("タイトルを入力してください")
       }
     } else {
       DB.transaction(function(txn) {
-        txn.executeSql("insert into tasks (title_id, memorization_date, content_name,  status) values (?, ?, ?, 0);", [outerThis.state.title_id, outerThis.state.memorization_date, outerThis.state.content_name], function(tx, res) {
+        txn.executeSql("insert into tasks (title_id, memorization_date, content_name,  status) values (?, ?, ?, 0);", [outerThis.state.title_id, outerThis.state.memorization_date, outerThis.state.content_name], function(tx, res) {});
+        [1, 3, 7, 14].forEach(function(elapsedDay) {
+          const duration = moment.duration(elapsedDay, "days")
+          txn.executeSql(
+            "insert into tasks (title_id, memorization_date, content_name,  status) values (?, ?, ?, 0);",
+            [outerThis.state.title_id, moment(outerThis.state.memorization_date).add(duration).format("YYYY-MM-DD"), outerThis.state.content_name],
+            function(tx, res) {}
+          );
         });
       });
     }
