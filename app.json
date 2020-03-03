@@ -1,31 +1,38 @@
 {
   "expo": {
-    "name": "Tab Navigation Template",
+    "name": "Forgetting Curve",
     "slug": "forgetting_curve",
-    "privacy": "public",
+    "scheme": "forgetting_curve",
+    "privacy": "unlisted",
     "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
+      "enabled": true,
+      "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
       "**/*"
     ],
     "ios": {
+      "bundleIdentifier": "com.forgetting_curve.app",
+      "buildNumber": "1.0.0",
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.forgetting_curve.app",
+      "versionCode": 2003032330
     }
   }
 }
