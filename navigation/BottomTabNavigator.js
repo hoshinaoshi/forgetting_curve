@@ -1,4 +1,5 @@
 import * as React from 'react';
+//https://expo.github.io/vector-icons/
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
@@ -20,23 +21,23 @@ export default function BottomTabNavigator({ navigation, route }) {
         name="Home"
         component={HomeScreen}
         options={{
-          title: 'Get Started',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+          title: '一覧',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="ios-list" />,
         }}
       />
       <BottomTab.Screen
         name="Task"
         component={TaskScreen}
         options={{
-          title: 'Get Started',
-          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-code-working" />,
+          title: 'タスク登録',
+          tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-add" />,
         }}
       />
       <BottomTab.Screen
         name="Links"
         component={LinksScreen}
         options={{
-          title: 'Resources',
+          title: '開発者情報',
           tabBarIcon: ({ focused }) => <TabBarIcon focused={focused} name="md-book" />,
         }}
       />
@@ -49,8 +50,10 @@ function getHeaderTitle(route) {
 
   switch (routeName) {
     case 'Home':
-      return 'How to get started';
+      return '記憶スケジュール一覧';
+    case 'Task':
+      return 'タスク登録';
     case 'Links':
-      return 'Links to learn more';
+      return '開発者情報';
   }
 }
